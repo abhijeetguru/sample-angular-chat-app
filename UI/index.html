@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ChatApp</title>
+        <!--Angular App Imports-->
+        <script src="Resources/Angular/angular.min.js"></script>
+        <script src="Resources/Angular/angular-route.min.js"></script>
+        <!--Socket IO imports-->
+        <script src="/socket.io/socket.io.js"></script>
+        <!--Project Imports-->
+        <script src="ChatApp.js"></script>
+        <script src="Resources/AppRouter.js"></script>
+        <script src="Controller/HomeController.js"></script>
+    </head>
+    <body ng-app="chatApp">
+        <ng-view></ng-view>
+    </body>
+</html>

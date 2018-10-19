@@ -1,0 +1,14 @@
+<div>
+    <div>From: </div>
+    <input type="text" ng-model="userName" ng-disabled="user">
+    <button value="Sign in" ng-hide="user" ng-click="signIn();">Sign in</button>
+</div>
+<div ng-show="user">
+    <input type="text" ng-model="toInp" ng-disabled="!user">
+    <input type="text" ng-model="msg" ng-disabled="!user">
+    <button value="Send Message" ng-show="user" ng-click="sendMsg();" ng-disabled="toInp==null && msg==null">Send Message</button><br/>
+    <div ng-repeat="message in messageList">
+        <h1>{{message.from}}</h1>
+        <h3>{{message.message}}</h3>
+    </div>
+</div>
