@@ -1,39 +1,18 @@
 var server = require('../Servers/Server');
+var authFilter = require('../Filters/AuthFilter');
+var ChatProcessor = require('../Processor/Chat/ChatProcessor');
 var router = server.express.Router();
 
-var namespacearray = [];
-router.get('/getChat', function(req,response, next){
-    var chatObj = {
-        'from':'Abhijeet',
-        'message':'Hello World'
-    };
-    response.send(chatObj);
-    server.io.emit('chat',chatObj);
-});
+router.use(authFilter);
 
-router.post('/sendMessage', function(req,response, next){
-    var msgFor = req.body.to;
-    if(namespacearray[msgFor]!=undefined){
-        namespacearray[msgFor].emit('chat',req.body);
+router.post('/sendMessage', function(req, res, next){
+    if(req.body.ChatSnippet){
+        res.statusCode=200;
+        res.send(new ChatProcessor().processChat(req.body.ChatSnippet));
+    }else{
+        res.statusCode = 500;
+        res.send("Oops! Someting went wrong.");
     }
 });
-
-server.io.on('connection', function(socket){
-    console.log('user connected');
-    socket.on('userlogin',function(data){
-        createNameSpace(data);
-    });
-    socket.on('disconnect', function(){
-        console.log('user disconnected');
-    });
-});
-
-function createNameSpace(data){
-    var namespace = server.io.of('/'+data.name);
-    namespacearray[data.name] = namespace;
-    namespace.on('connection', function(socket){
-        console.log('%c User '+data.name+' connected', 'color:red;');
-    });
-};
 
 module.exports = router;
